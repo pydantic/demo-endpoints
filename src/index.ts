@@ -9,20 +9,12 @@ export default {
     }
 
     if (path === '/') {
-      const sentences = [
-        'The quick brown fox jumps over the lazy dog.',
-        "Life is what happens when you're busy making other plans.",
-        'In a hole in the ground there lived a hobbit.',
-        'It was the best of times, it was the worst of times.',
-        'All happy families are alike; each unhappy family is unhappy in its own way.',
-        'The only way to do great work is to love what you do.',
-        'Be yourself; everyone else is already taken.',
-        'Two roads diverged in a wood, and I took the one less traveled by.',
-        'To be or not to be, that is the question.',
-        'The journey of a thousand miles begins with one step.',
-      ]
-      const randomSentence = sentences[Math.floor(Math.random() * sentences.length)]
-      return new Response(randomSentence)
+      const repo = 'github.com/pydantic/demo-endpoints'
+      const html = `\
+<h1>demo-endpoints</h1>
+<p>See <a href="https://${repo}">${repo}</a> for more information.</p>
+`
+      return new Response(html, { headers: { 'content-type': 'text/html' } })
     }
 
     while (path.endsWith('/')) {
@@ -73,6 +65,5 @@ export default {
     return new Response('Not Found', { status: 404 })
   },
 } satisfies ExportedHandler<Env>
-
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
