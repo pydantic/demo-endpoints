@@ -3,6 +3,11 @@ export default {
     const url = new URL(request.url)
     let path = url.pathname
 
+    const sleepTime = url.searchParams.get('sleep')
+    if (sleepTime) {
+      await sleep(parseInt(sleepTime))
+    }
+
     if (path === '/') {
       const sentences = [
         'The quick brown fox jumps over the lazy dog.',
@@ -68,3 +73,6 @@ export default {
     return new Response('Not Found', { status: 404 })
   },
 } satisfies ExportedHandler<Env>
+
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
