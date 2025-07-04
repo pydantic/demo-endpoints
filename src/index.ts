@@ -1,7 +1,7 @@
 export default {
   async fetch(request, env, ctx): Promise<Response> {
     const url = new URL(request.url)
-    const path = url.pathname
+    let path = url.pathname
 
     if (path === '/') {
       const sentences = [
@@ -18,6 +18,10 @@ export default {
       ]
       const randomSentence = sentences[Math.floor(Math.random() * sentences.length)]
       return new Response(randomSentence)
+    }
+
+    while (path.endsWith('/')) {
+      path = path.slice(0, -1)
     }
 
     if (path === '/number') {
@@ -47,6 +51,18 @@ export default {
       ]
       const randomWeather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)]
       return new Response(randomWeather)
+    }
+
+    if (path === '/latlng') {
+      // Generate random latitude between -60 and 75 (most inhabited areas)
+      const lat = Math.round((Math.random() * 135 - 60) * 10) / 10
+      // Generate random longitude between -180 and 180
+      const lng = Math.round((Math.random() * 360 - 180) * 10) / 10
+
+      const coordinates = { lat, lng }
+      return new Response(JSON.stringify(coordinates), {
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     return new Response('Not Found', { status: 404 })
